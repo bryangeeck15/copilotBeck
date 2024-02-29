@@ -1,0 +1,111 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Extensión de Chrome</title>
+        
+    </head>
+    <script>
+function activarMicro(){
+    alert("1");
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        alert("2");
+        // Obtener acceso al micrófono
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function(stream) {
+                alert("3");
+                // Éxito: se obtuvo acceso al micrófono
+                // `stream` contiene el flujo de audio del micrófono
+                alert('Acceso al micrófono concedido');
+                
+                // Hacer algo con el flujo de audio, como reproducirlo, grabarlo, etc.
+            })
+            .catch(function(error) {
+                alert("4");
+                // Error: no se pudo acceder al micrófono o el usuario denegó el permiso
+                alert('Error al acceder al micrófono:', error);
+            });
+    } else {
+        // El navegador no soporta getUserMedia
+        alert('getUserMedia no está soportado en este navegador');
+    }
+    
+}
+        
+
+function llamarUipath(){
+                
+    const url = "https://cloud.uipath.com/beeckyejucmk/Orquestador/odata/Queues/UiPathODataSvc.AddQueueItem";
+    const bodyData = {
+        "itemData": {
+            "Priority": "Normal",
+            "Name": "queuePedido",
+            "SpecificContent": {
+                "Cliente": "Beecker",
+                "listaProductos": "[\r\n{\r\n\"Nombre del producto\": \"Cerveza Tecate Original 355 ml\",\r\n\"Cantidad\": \"5\"\r\n},\r\n{\r\n\"Nombre del producto\": \"Cerveza Tecate Titanium 355 ml\",\r\n\"Cantidad\": \"3\"\r\n}\r\n]"
+            },
+            "Reference": "queuePedido"
+        }
+    };
+
+    const authToken = "Bearer rt_64521984731FF3A3F5DF2A17DA94D83E8617678142CBA3BEC17F58C8A7A63FE5-1";
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': authToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+    });
+
+    alert("hola amigos");
+ }
+
+    </script>
+        
+    <style>
+        #formulario{
+            width: 300px;
+            height: 400px;
+            position: fixed;
+            background-color: cornflowerblue;
+            float: right;
+            
+
+        }
+        #principal{
+            display: flex;
+            justify-content: flex-end;
+            border: 1px red solid;
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+    <body>
+        <h1>Este sera un asistente virtual</h1>
+        <div id="principal">
+            <div id="formulario">
+                <form action="">
+                <h3>Bienvenido</h3>
+                <h3>Soy un asistente</h3>
+                <button id="invocar" onclick="llamarUipath()">invocar Uipath</button>
+                <button id="microfono" onclick="activarMicro()" >Microfono</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
