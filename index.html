@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+    <script>
+function llamarUipath(){
+  alert("aa");
+                
+const url = "https://cloud.uipath.com/beeckyejucmk/Orquestador/odata/Queues/UiPathODataSvc.AddQueueItem";
+const authToken = "rt_64521984731FF3A3F5DF2A17DA94D83E8617678142CBA3BEC17F58C8A7A63FE5-1";
+const organizationUnitId = "2282113";
+const bodyData = {
+    "itemData": {
+        "Priority": "Normal",
+        "Name": "queuePedido",
+        "SpecificContent": {
+            "Cliente": "Beecker",
+            "listaProductos": "[\r\n{\r\n\"Nombre del producto\": \"Cerveza Tecate Original 355 ml\",\r\n\"Cantidad\": \"5\"\r\n},\r\n{\r\n\"Nombre del producto\": \"Cerveza Tecate Titanium 355 ml\",\r\n\"Cantidad\": \"3\"\r\n}\r\n]"
+        },
+        "Reference": "queuePedido"
+    }
+};
+
+
+fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ${'+authToken+'}',
+        'X-UIPATH-OrganizationUnitId': 2282113,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyData)
+    
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+.then(data => {
+    console.log(data);
+})
+.catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+});
+
+}
+
+    </script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Copilot</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="assets/home.css" />
+  </head>
+
+  <body>
+    <i id="recordButton" class="bi bi-mic-fill"></i>
+    <p id="recordingTime">Tiempo de grabación: 00:00</p>
+
+    <a href="audios.php" target="_blank" id="bottomRightButton">
+      <i class="bi bi-file-earmark-music"></i>
+      Audios
+    </a>
+
+    <button id="callAction" onclick="llamarUipath()">llamar uipath</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="assets/audio.js"></script>
+  </body>
+</html>
